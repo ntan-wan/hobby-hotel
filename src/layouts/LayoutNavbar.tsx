@@ -11,7 +11,7 @@ interface LinkButtonProps extends React.ComponentProps<typeof Button> {
 }
 const LinkButton = ({ icon, label, ...props} : LinkButtonProps) => {
   return (
-    <Button asChild variant="ghost" {...props} className={cn("hover:bg-blue-600 text-base !text-white rounded-full transition-colors")}>
+    <Button asChild variant="ghost" {...props} className={cn(" hover:bg-blue-600 text-base !text-white rounded-full transition-colors")}>
       <Link to="/">{icon} {label}</Link>
     </Button>
   );
@@ -25,7 +25,7 @@ export const LayoutNavbar = () => {
   ];
 
   return (
-    <nav className="bg-primary text-white pt-4 pb-3 fixed top-0 w-full">
+    <nav className="z-10 bg-primary text-white pt-4 pb-3 fixed top-0 w-full">
       <div className="container">
         {/* First Row */}
         <div className="flex items-center justify-between">

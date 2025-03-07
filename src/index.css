@@ -126,11 +126,13 @@
 
 @utility container {
   @apply mx-auto;
+  max-width: 1110px;
 }
 
 @layer utilities {
   .page-content {
-    padding-top: calc(116px + 8px);
+    padding-top: calc(116px + 24px);
+	padding-bottom: 48px;
     min-height: 100vh;
     /* min-height: calc(100vh - 105px); */
   }
