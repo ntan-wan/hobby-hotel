@@ -1,22 +1,29 @@
-import { useState } from "react";
 import { match } from "ts-pattern";
-import dummyProperties from "@/assets/jsons/dummy-properties.json";
+import { useQuery } from "@tanstack/react-query";
 
+import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilter } from "@/components/product/ProductFilter";
-import { Button } from "@/components/ui/button";
+import { getAccommodations } from "@/services/accommodation.service";
 
 export const HomePage = () => {
   //# STATES
-  const [isLoading, setIsLoading] = useState(false);
-  const properties = dummyProperties;
+
+  //# REACT QUERY
+  const {
+    data: accommodations,
+    isLoading: accommodationIsLoading,
+    isError: accommodationIsError,
+    refetch: refetchAccommodations,
+  } = useQuery({
+    queryKey: ["accommodations"],
+    queryFn: () => getAccommodations(),
+    select: (res) => res.data,
+  });
 
   //# EVENT HANDLERS
   const onClickLoadMore = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    refetchAccommodations();
   };
 
   return (
@@ -27,8 +34,8 @@ export const HomePage = () => {
           <ProductFilter />
         </div>
         <div className="w-9/12 flex flex-col gap-4">
-          {match({ isLoading })
-            .with({ isLoading: true }, () => {
+          {match({ accommodationIsLoading })
+            .with({ accommodationIsLoading: true }, () => {
               return (
                 <>
                   {Array.from({ length: 10 }).map((_, index) => (
@@ -40,8 +47,8 @@ export const HomePage = () => {
             .otherwise(() => {
               return (
                 <>
-                  {properties.map((property, index) => (
-                    <ProductCard key={index} product={property} />
+                  {accommodations?.map((accommodation, index) => (
+                    <ProductCard key={index} product={accommodation} />
                   ))}
                 </>
               );

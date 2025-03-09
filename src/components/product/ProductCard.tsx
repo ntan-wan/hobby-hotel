@@ -5,7 +5,6 @@ import { Property } from "@/types/type.index";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import demoHomeStay from "@/assets/imgs/demo-homestay.png";
 import imgPlaceholder from "@/assets/imgs/img-placeholder.jpg";
 import { ChevronRight, Check, Heart, Star } from "lucide-react";
 
@@ -16,7 +15,7 @@ interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 export const ProductCard = ({ product, className, isLoading = false, ...props }: ProductCardProps) => {
   const isFavourite = false;
-  const { thumbnail, title, rating, amenities } = product ?? {};
+  const { thumbnail, name, rating, ammenities } = product ?? {};
 
   if (isLoading) {
     return (
@@ -54,7 +53,7 @@ export const ProductCard = ({ product, className, isLoading = false, ...props }:
           <div className="flex justify-between gap-4">
             <div className="">
               <h1 className="text-xl font-bold text-blue-600 flex items-center gap-2">
-                {title}
+                {name}
                 <Badge variant="outline" className="border-gray-500 rounded-sm font-normal">
                   Featured
                 </Badge>
@@ -79,7 +78,7 @@ export const ProductCard = ({ product, className, isLoading = false, ...props }:
           <div className="flex justify-between gap-4 pl-2 border-l-2">
             <div className="text-xs flex flex-col gap-2">
               <p className="font-bold">One-Bedroom Apartment</p>
-              <p>{amenities?.join(" . ")}</p>
+              <p>{ammenities?.join(" . ")}</p>
               <p className="flex items-center gap-1 text-green-700">
                 <Check size={16} />
                 <span className="font-semibold">Free cancellation</span>
