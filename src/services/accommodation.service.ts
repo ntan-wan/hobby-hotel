@@ -1,6 +1,20 @@
 import { axiosInstance } from "@/utils/util.axios";
-
+import { AccommodationFilters } from "@/types/type.index";
 export const getAccommodations = async () => {
-  const url = `/accommodations`;
+  const url = `/api/v1/accommodations`;
   return await axiosInstance.get(url);
+};
+
+export const searchAccommodations = async (query: AccommodationFilters) => {
+  const { rating, priceRange } = query ?? {};
+  const url = `/api/v1/accommodations/search`;
+  const res = await axiosInstance.post(url, {
+    rating,
+    priceRange: {
+      min: priceRange?.[0],
+      max: priceRange?.[1],
+    },
+  });
+
+  return res.data;
 };

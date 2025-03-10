@@ -132,8 +132,17 @@
 @layer utilities {
   .page-content {
     padding-top: calc(116px + 24px);
-	padding-bottom: 48px;
+    padding-bottom: 48px;
     min-height: 100vh;
     /* min-height: calc(100vh - 105px); */
+  }
+}
+
+@layer components {
+  .custom-range-slider.range-slider {
+	@apply !h-1;
+    .range-slider__thumb {
+      @apply bg-primary !w-4 !h-4;
+    }
   }
 }

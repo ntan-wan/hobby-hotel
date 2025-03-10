@@ -1,37 +1,51 @@
 import { match } from "ts-pattern";
-import { useQuery } from "@tanstack/react-query";
+import { utils } from "@/utils/util.index";
+import { useCallback, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { AccommodationFilters, Accommodation } from "@/types/type.index";
 
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilter } from "@/components/product/ProductFilter";
-import { getAccommodations } from "@/services/accommodation.service";
+import { searchAccommodations } from "@/services/accommodation.service";
 
 export const HomePage = () => {
-  //# STATES
+  //# LIFE CYCLE
+  useEffect(() => {
+    debouncedSearch({
+      priceRange: [0, 550],
+    });
+  }, []);
 
-  //# REACT QUERY
+  //# REACT QUERIES
   const {
     data: accommodations,
-    isLoading: accommodationIsLoading,
-    isError: accommodationIsError,
-    refetch: refetchAccommodations,
-  } = useQuery({
-    queryKey: ["accommodations"],
-    queryFn: () => getAccommodations(),
-    select: (res) => res.data,
+    mutateAsync: executeSearch,
+    isPending: accommodationIsLoading,
+  } = useMutation<Accommodation[], Error, AccommodationFilters>({
+    mutationKey: ["searchAccommodations"],
+    mutationFn: searchAccommodations,
   });
 
+  //# METHODS
+  const debouncedSearch = useCallback(
+    utils.debounce((filters: AccommodationFilters) => {
+      executeSearch(filters);
+    }, 500),
+    []
+  );
   //# EVENT HANDLERS
-  const onClickLoadMore = () => {
-    refetchAccommodations();
+  const handleFilterChange = (filters: AccommodationFilters) => {
+    debouncedSearch(filters);
   };
+  const onClickLoadMore = () => {};
 
   return (
-    <div className="">
+    <div>
       {/* Products */}
       <div className="flex gap-4">
         <div className="w-3/12 sticky top-[140px] self-start h-screen">
-          <ProductFilter />
+          <ProductFilter onFilterChange={handleFilterChange} />
         </div>
         <div className="w-9/12 flex flex-col gap-4">
           {match({ accommodationIsLoading })
