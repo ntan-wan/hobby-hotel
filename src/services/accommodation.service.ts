@@ -6,7 +6,7 @@ export const getAccommodations = async () => {
 };
 
 export const searchAccommodations = async (query: AccommodationFilters) => {
-  const { rating, priceRange } = query ?? {};
+  const { rating, priceRange, page, limit } = query ?? {};
   const url = `/api/v1/accommodations/search`;
   const res = await axiosInstance.post(url, {
     rating,
@@ -14,6 +14,8 @@ export const searchAccommodations = async (query: AccommodationFilters) => {
       min: priceRange?.[0],
       max: priceRange?.[1],
     },
+	page,
+	limit
   });
 
   return res.data;
